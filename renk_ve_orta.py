@@ -1,14 +1,14 @@
 import cv2
 import numpy as np
 
-
 def playVideo():
     vid = cv2.VideoCapture(0)
 
     while True:
         gordu = False  # belirttiğimiz nesneyi gördüğümüzü anlamamız için değişken kamera görüntüyü görmediği sürece False olarak kalacak
+        
         _, img = vid.read()
-        # print(img.shape)
+        
         # renk uzayı değişimi
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
