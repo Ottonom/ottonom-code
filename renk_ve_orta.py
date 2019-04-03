@@ -1,6 +1,18 @@
 import cv2
 import numpy as np
 
+import RPi.GPIO as GPIO
+import time
+
+# Motor pinleri
+enA = 25
+pin1 = 27
+pin2 = 22
+
+enB = 17
+pin3 = 23
+pin4 = 24
+
 def playVideo():
     vid = cv2.VideoCapture(0)
 
@@ -35,7 +47,10 @@ def playVideo():
                 # print("x:" + str(x) + "y:" + str(y) + "w:" + str(w) + "h:" + str(h))
                 # img = cv2.rectangle(img, (x, y), ((x + w), (y + h)), (255, 0, 0), 2)
                 # cv2.putText(img, "mavi", (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0))
-
+                GPIO.output(pin1,GPIO.LOW)
+                GPIO.output(pin2,GPIO.HIGH)
+                GPIO.output(pin3,GPIO.LOW)
+                GPIO.output(pin4,GPIO.HIGH)
         cv2.imshow("goruntu", img)
         if cv2.waitKey(10) & 0xFF == ord('q'):
             vid.release()
