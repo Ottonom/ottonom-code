@@ -4,6 +4,10 @@ import numpy as np
 import RPi.GPIO as GPIO
 import time
 
+#import picamera
+from picamera import PiCamera
+from picamera.array import PiRGBArray
+
 # Motor pinleri
 enA = 25
 pin1 = 27
@@ -14,13 +18,13 @@ pin3 = 23
 pin4 = 24
 
 def playVideo():
-    vid = cv2.VideoCapture(0)
-
+    #vid = cv2.VideoCapture()
+    
     while True:
         gordu = False  # belirttiğimiz nesneyi gördüğümüzü anlamamız için değişken kamera görüntüyü görmediği sürece False olarak kalacak
         
-        _, img = vid.read()
-        
+        #_, img = img.read()
+
         # renk uzayı değişimi
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -56,3 +60,21 @@ def playVideo():
             vid.release()
             cv2.destroyAllWindows()
             break
+
+def de():
+    camera = PiCamera()
+    camera.resulution = (480,480)
+    camera.framerate = 32
+    rawCapture = PiRGBArray(camera, size = (480,480))
+    time.sleep(0.1)
+    
+    for frame in camera.capture_continuous(rawCapture, format = "bgr", use_video_port = True):
+        image = frame.array
+        cv2.imshow('Frame', image)
+        key = cv2.waitKey(1) & 0xFF
+        rawCapture.truncate(0)
+        
+        if key == ord("q"):
+            break
+        
+de()
