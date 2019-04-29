@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import time
 
 cap = cv2.VideoCapture(0)
 
@@ -12,16 +13,16 @@ while (1):
 
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    #pencere orta noktaları 360 x 270 px
-    #window center noktları
+    # pencere orta noktaları 360 x 270 px
+    # window center noktları
 
     wcx = 360
     wcy = 270
 
     cv2.circle(img, (wcx, wcy), 5, (255, 255, 255), -1)
 
-    yellow_lower = np.array([41, 39, 64], np.uint8)
-    yellow_upper = np.array([80, 255, 255], np.uint8)
+    yellow_lower = np.array([136, 87, 111], np.uint8)
+    yellow_upper = np.array([180, 255, 255], np.uint8)
 
     yellow = cv2.inRange(hsv, yellow_lower, yellow_upper)
 
@@ -37,8 +38,11 @@ while (1):
         M = cv2.moments(cnt)
 
         # tespit edilen rengin x ve ye coord.
-        x = int(M['m10'] / M['m00'])
-        y = int(M['m01'] / M['m00'])
+        if M["m00"] != 0:
+            x = int(M["m10"] / M["m00"])
+            y = int(M["m01"] / M["m00"])
+        else:
+            x, y = 0, 0
         print(x, y)
         cv2.circle(img, (x, y), 5, (255, 255, 255), -1)
 
