@@ -6,7 +6,19 @@ cap = cv2.VideoCapture(0)
 while (1):
     _, img = cap.read()
 
+    # raspberry çözünürlüğü 3280 × 2464 pixels
+    # 720px ile sınırlandırırsak 720 x 540,87 pixels
+    img = cv2.resize(img, (720, 540))
+
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    #pencere orta noktaları 360 x 270 px
+    #window center noktları
+
+    wcx = 360
+    wcy = 270
+
+    cv2.circle(img, (wcx, wcy), 5, (255, 255, 255), -1)
 
     yellow_lower = np.array([41, 39, 64], np.uint8)
     yellow_upper = np.array([80, 255, 255], np.uint8)
@@ -23,9 +35,12 @@ while (1):
     for pic, contour in enumerate(contours):
         cnt = contours[0]
         M = cv2.moments(cnt)
+
+        # tespit edilen rengin x ve ye coord.
         x = int(M['m10'] / M['m00'])
         y = int(M['m01'] / M['m00'])
         print(x, y)
+        cv2.circle(img, (x, y), 5, (255, 255, 255), -1)
 
         area = cv2.contourArea(contour)
         if (area > 400):
